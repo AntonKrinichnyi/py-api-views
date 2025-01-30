@@ -4,10 +4,12 @@ from rest_framework import status, viewsets, mixins, generics
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from cinema.models import Movie, Genre, Actor, CinemaHall
-from cinema.serializers import (MovieSerializer,
-                                ActorSerializer,
-                                GenreSerializer,
-                                CinemaHallSerializer)
+from cinema.serializers import (
+    MovieSerializer,
+    ActorSerializer,
+    GenreSerializer,
+    CinemaHallSerializer,
+)
 
 
 class MovieViewSet(viewsets.ModelViewSet):
@@ -60,9 +62,9 @@ class GenreDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ActorList(generics.GenericAPIView,
-                mixins.ListModelMixin,
-                mixins.CreateModelMixin):
+class ActorList(
+    generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
+):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
 
@@ -73,10 +75,12 @@ class ActorList(generics.GenericAPIView,
         return self.create(request, *args, **kwargs)
 
 
-class ActorDetail(generics.GenericAPIView,
-                  mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin):
+class ActorDetail(
+    generics.GenericAPIView,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
 
@@ -93,11 +97,13 @@ class ActorDetail(generics.GenericAPIView,
         return self.destroy(request, *args, **kwargs)
 
 
-class CinemaHallList(generics.ListCreateAPIView):
-    queryset = CinemaHall.objects.all()
-    serializer_class = CinemaHallSerializer
-
-
-class CinemaHallDetail(generics.RetrieveUpdateDestroyAPIView):
+class CinemaHallViewSet(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
